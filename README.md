@@ -1,1 +1,1 @@
-# solr--monitor
+# solr-monitor
