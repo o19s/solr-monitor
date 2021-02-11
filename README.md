@@ -6,10 +6,11 @@ Easy search alerts with Solr!  This project is a Solr package that exposes the L
 
 Start Solr with packaging enabled:
 
-`docker run --rm -p 8983:8983 --name solr solr:8.7 -c -Denable.packages=true`
+```bash
+docker run --rm -p 8983:8983 --name solr solr:8.7 -c -Denable.packages=true
 
 docker exec -it solr bash
-
+```
 
 ## Lucene Monitor API
 
