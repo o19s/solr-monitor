@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
+group 'com.o19s'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
@@ -13,4 +13,9 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    // https://mvnrepository.com/artifact/org.apache.solr/solr-core
+    implementation group: 'org.apache.solr', name: 'solr-core', version: '8.8.0'
+    testImplementation group: 'org.apache.solr', name: 'solr-test-framework', version: '8.8.0'
+
 }
