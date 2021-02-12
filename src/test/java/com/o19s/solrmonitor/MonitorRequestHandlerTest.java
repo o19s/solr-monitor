@@ -98,6 +98,67 @@ public class MonitorRequestHandlerTest extends SolrTestCaseJ4 {
     assertNotNull(handler.getDescription());
   }
 
+  @Test
+  public void match() {
+    ModifiableSolrParams p = new ModifiableSolrParams();
+    p.add("doc", "This is the book War and Peace");
+    p.add("op", "match");
+    p.add("id", "doc1");
+    SolrParams params = SolrParams.wrapDefaults(p, baseParams);
+    SolrQueryRequestBase req = new SolrQueryRequestBase(h.getCore(), params) {};
+    assertQ(req, "//str[@name='match']");
+    req.close();
+  }
 
+  @Test
+  public void getQueryIds() {
+    ModifiableSolrParams p = new ModifiableSolrParams();
+    p.add("op", "getQueryIds");
+    SolrParams params = SolrParams.wrapDefaults(p, baseParams);
+    SolrQueryRequestBase req = new SolrQueryRequestBase(h.getCore(), params) {};
+    assertQ(req, "//str[@name='getQueryIds']");
+    req.close();
+  }
 
+  @Test
+  public void getQueryCount() {
+    ModifiableSolrParams p = new ModifiableSolrParams();
+    p.add("op", "getQueryCount");
+    SolrParams params = SolrParams.wrapDefaults(p, baseParams);
+    SolrQueryRequestBase req = new SolrQueryRequestBase(h.getCore(), params) {};
+    assertQ(req, "//str[@name='getQueryCount']");
+    req.close();
+  }
+
+  @Test
+  public void getQuery() {
+    ModifiableSolrParams p = new ModifiableSolrParams();
+    p.add("op", "getQuery");
+    p.add("id", "testQuery1");
+    SolrParams params = SolrParams.wrapDefaults(p, baseParams);
+    SolrQueryRequestBase req = new SolrQueryRequestBase(h.getCore(), params) {};
+    assertQ(req, "//str[@name='getQuery']");
+    req.close();
+  }
+
+  @Test
+  public void deleteById() {
+    ModifiableSolrParams p = new ModifiableSolrParams();
+    p.add("op", "deleteById");
+    p.add("id", "testQuery1");
+    SolrParams params = SolrParams.wrapDefaults(p, baseParams);
+    SolrQueryRequestBase req = new SolrQueryRequestBase(h.getCore(), params) {};
+    assertQ(req, "//str[@name='deleteById']");
+    req.close();
+  }
+
+  @Test
+  public void clear() {
+    ModifiableSolrParams p = new ModifiableSolrParams();
+    p.add("op", "clear");
+    SolrParams params = SolrParams.wrapDefaults(p, baseParams);
+    SolrQueryRequestBase req = new SolrQueryRequestBase(h.getCore(), params) {};
+    assertQ(req, "//str[@name='clear']");
+    req.close();
+  }
 }

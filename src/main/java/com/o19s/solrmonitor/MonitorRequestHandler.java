@@ -36,18 +36,37 @@ public class MonitorRequestHandler extends RequestHandlerBase {
 
 //    Analyzer analyzer = req.getSchema().getField(indexedField).getType().getQueryAnalyzer();
     rsp.addResponseHeader(req.getParams().toNamedList());
-    rsp.add("blah", "blarg");
 
-    if (operation == "create") {
-      rsp.add("create", create(req.getParams().get("name")));
-    }
-    if (operation == "register") {
-      rsp.add("register", register(req.getParams().get("id"), req.getParams().get(CommonParams.Q)));
+    switch (operation) {
+      case "create":
+        rsp.add("create", create());
+        break;
+      case "register":
+        rsp.add("register", register(req.getParams().get("id"), req.getParams().get(CommonParams.Q)));
+      case "match":
+        rsp.add("match", match(req.getParams().get("doc")));
+      case "getQueryIds":
+        rsp.add("getQueryIds", getQueryIds());
+        break;
+      case "getQueryCount":
+        rsp.add("getQueryCount", getQueryCount());
+        break;
+      case "getQuery":
+        rsp.add("getQuery", match(req.getParams().get("id")));
+        break;
+      case "deleteById":
+        rsp.add("deleteById", match(req.getParams().get("id")));
+        break;
+      case "clear":
+        rsp.add("clear", clear());
+        break;
+      default:
+        break;
     }
   }
 
-  String create(String name) {
-    return String.format("create called with name '%s'", name);
+  String create() {
+    return "create called";
   }
 
 //  delete() / close()
@@ -55,14 +74,31 @@ public class MonitorRequestHandler extends RequestHandlerBase {
     return String.format("register called with name '%s' and value '%s'", id, queryString);
   }
 //  purgeCache()
-//  match(doc)
-//  getQueryIds()
-//  getQueryCount()
+
+  String match(String doc) {
+    return String.format("match called with doc '%s'", doc);
+  }
+
+  String getQueryIds() {
+    return "getQueryIds called";
+  }
+
+  String getQueryCount() {
+    return "getQueryCount called";
+  }
+
 //  getQueryCacheStats()
-//  getQuery(queryId)
+  String getQuery(String queryId) {
+    return String.format ("getQueryCount called for queryId '%s'", queryId);
+  }
 //  getDisjunctCount()
-//  deleteById(id)
-//  clear()
+  String deleteById(String queryId) {
+    return String.format ("deleteById called for queryId '%s'", queryId);
+  }
+
+  String clear() {
+    return "clear called";
+  }
 //  close()
 
 
