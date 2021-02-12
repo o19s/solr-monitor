@@ -175,6 +175,9 @@
   <requestHandler name="/monitor" class="com.o19s.solrmonitor.MonitorRequestHandler">
   </requestHandler>
 
+  <requestHandler name="/monitor-api" class="com.o19s.solrmonitor.MonitorRequestHandler">
+  </requestHandler>
+
     
   <requestHandler name="/select" class="solr.SearchHandler">
     <bool name="httpCaching">true</bool>

@@ -35,6 +35,11 @@ public class MonitorRequestHandlerTest extends SolrTestCaseJ4 {
     baseParams.set(CommonParams.WT, "xml");
   }
 
+  @Override
+  public void tearDown() throws Exception {
+    super.tearDown();
+  }
+
 //  @Test
 //  public void handleRequestBody() throws Exception {
 //    baseParams.set("field", "name_tagStop");//stop filter (pos inc enabled) index & query
@@ -66,19 +71,6 @@ public class MonitorRequestHandlerTest extends SolrTestCaseJ4 {
 //  }
 
   @Test
-  public void testCreate() throws Exception {
-    ModifiableSolrParams p = new ModifiableSolrParams();
-    p.add("op", "create");
-    p.add("name", "testQuery1");
-    SolrParams params = SolrParams.wrapDefaults(p, baseParams);
-    SolrQueryRequestBase req = new SolrQueryRequestBase(h.getCore(), params) {};
-//    SolrQueryResponse rsp = h.queryAndResponse(req.getParams().get(CommonParams.QT), req);
-//    String rspStr = h.query(req);
-    assertQ(req, "//str[@name='create']");
-    req.close();
-  }
-
-  @Test
   public void testRegister() throws Exception {
     ModifiableSolrParams p = new ModifiableSolrParams();
     p.add(CommonParams.Q, "+war +peace");
@@ -92,6 +84,28 @@ public class MonitorRequestHandlerTest extends SolrTestCaseJ4 {
     assertQ(req, "//str[@name='register']");
     req.close();
   }
+
+  @Test
+  public void shouldNotRegisterUnlessCreated() {
+    ModifiableSolrParams p = new ModifiableSolrParams();
+    p.add(CommonParams.Q, "+war +peace");
+    p.add(CommonParams.DF, "title");
+    p.add("op", "register");
+    p.add("id", "testQuery1");
+    SolrParams params = SolrParams.wrapDefaults(p, baseParams);
+    SolrQueryRequestBase req = new SolrQueryRequestBase(h.getCore(), params) {};
+//    SolrQueryResponse rsp = h.queryAndResponse(req.getParams().get(CommonParams.QT), req);
+//    String rspStr = h.query(req);
+    try {
+      assertQ(req, "//str[@name='register']");
+    } catch (Exception e) {
+
+    } finally {
+      req.close();
+    }
+
+  }
+
   @Test
   public void getDescription() {
     MonitorRequestHandler handler = new MonitorRequestHandler();
@@ -101,11 +115,22 @@ public class MonitorRequestHandlerTest extends SolrTestCaseJ4 {
   @Test
   public void match() {
     ModifiableSolrParams p = new ModifiableSolrParams();
+    p.add(CommonParams.Q, "+war +peace");
+    p.add(CommonParams.DF, "title");
+    p.add("op", "register");
+    p.add("id", "testQuery1");
+    SolrParams params = SolrParams.wrapDefaults(p, baseParams);
+    SolrQueryRequestBase req = new SolrQueryRequestBase(h.getCore(), params) {};
+    assertQ(req, "//str[@name='register']");
+    req.close();
+
+    p.clear();
+    p.add(CommonParams.DF, "title");
     p.add("doc", "This is the book War and Peace");
     p.add("op", "match");
     p.add("id", "doc1");
-    SolrParams params = SolrParams.wrapDefaults(p, baseParams);
-    SolrQueryRequestBase req = new SolrQueryRequestBase(h.getCore(), params) {};
+    params = SolrParams.wrapDefaults(p, baseParams);
+    req = new SolrQueryRequestBase(h.getCore(), params) {};
     assertQ(req, "//str[@name='match']");
     req.close();
   }
@@ -121,12 +146,23 @@ public class MonitorRequestHandlerTest extends SolrTestCaseJ4 {
   }
 
   @Test
-  public void getQueryCount() {
+  public void getQueryCount() throws Exception {
     ModifiableSolrParams p = new ModifiableSolrParams();
-    p.add("op", "getQueryCount");
+    p.add(CommonParams.Q, "+war +peace");
+    p.add(CommonParams.DF, "title");
+    p.add("op", "register");
+    p.add("id", "testQuery1");
     SolrParams params = SolrParams.wrapDefaults(p, baseParams);
     SolrQueryRequestBase req = new SolrQueryRequestBase(h.getCore(), params) {};
-    assertQ(req, "//str[@name='getQueryCount']");
+    assertQ(req, "//str[@name='register']");
+    req.close();
+
+    p.clear();
+    p.add("op", "getQueryCount");
+    params = SolrParams.wrapDefaults(p, baseParams);
+    req = new SolrQueryRequestBase(h.getCore(), params) {};
+//    assertQ(req, "//str[@name='getQueryCount']");
+    String rspStr = h.query(req);
     req.close();
   }
 

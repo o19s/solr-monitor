@@ -1,0 +1,12 @@
+{
+  "documentation": "https://github.com/o19s/solr-monitor",
+  "description": "Delete monitors. The name of the monitor to delete must be provided as a path parameter.",
+  "methods": [
+    "DELETE"
+  ],
+  "url": {
+    "paths": [
+      "/monitor/configs/{name}"
+    ]
+  }
+}

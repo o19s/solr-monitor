@@ -1,0 +1,12 @@
+{
+  "documentation": "https://github.com/o19s/solr-monitor",
+  "description": "List all monitors in the cluster.",
+  "methods": [
+    "GET"
+  ],
+  "url": {
+    "paths": [
+      "/monitor/configs"
+    ]
+  }
+}
